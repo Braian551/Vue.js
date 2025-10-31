@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo básico con Vue 3</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="contenedor">
+            <h2>Ejemplo Vue.js</h2>
+            <h3>Dinámico</h3>
+            <input type="text" v-model="mensaje1" placeholder=" Escribe algo... ">
+
+            <p>Tu mensaje:</p>
+            <p>{{ mensaje1 }}</p>
+            <h3>Botón</h3>
+            <input type="text" @click="ocultar" v-model="mensaje" placeholder=" Escribe algo... ">
+            <div class="botones">
+                <button class="btn-text" @click="cambiarTexto ">Cambiar texto</button>
+
+                <button class="btn-clean" @click="borrar">Limpiar </button>
+            </div>
+
+
+            <p>Tu mensaje:</p>
+            <p v-if="mostrar">{{ mensaje }}</p>
+        </div>
+    </div>
+
+    <!-- Importar Vue 3  -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js "></script>
+
+    <script>
+        const {
+            createApp
+        } = Vue;
+
+
+        createApp({
+            // Aquí van los datos que se mostrarán en la vista
+            data() {
+                return {
+                    mensaje1: "",
+                    mensaje: "",
+                    mostrar: false
+
+                };
+            },
+            methods: {
+                cambiarTexto() {
+                    this.mostrar = true;
+                    this.mensaje;
+                },
+                ocultar() {
+                    this.mostrar = false;
+
+                },
+                borrar() {
+                    this.mensaje = "";
+                },
+
+
+            }
+        }).mount("#app ");
+    </script>
+</body>
+
+</html>
