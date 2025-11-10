@@ -1,0 +1,38 @@
+<div id="app">
+    <h2>Lista de tareas</h2>
+
+    <!-- Campo para agregar elementos -->
+    <input v-model="nuevaTarea" placeholder="Escribe una tarea" />
+    <button @click="agregarTarea">Agregar</button>
+
+    <!-- Lista de elementos -->
+    <ul>
+        <li v-for="(tarea, index) in tareas" :key="index">
+            {{ tarea }}
+            <button @click="eliminarTarea(index)">Eliminar</button>
+        </li>
+    </ul>
+</div>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js "></script>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                nuevaTarea: '', // Campo de texto
+                tareas: [] // Lista de elementos
+            }
+        },
+        methods: {
+            agregarTarea() {
+                if (this.nuevaTarea.trim() !== '') {
+                    this.tareas.push(this.nuevaTarea.trim())
+                    this.nuevaTarea = '' // Limpiar el campo
+                }
+            },
+            eliminarTarea(index) {
+                this.tareas.splice(index, 1) // Eliminar elemento por índice
+            }
+        }
+    }).mount("#app");
+</script>
