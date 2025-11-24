@@ -1,0 +1,81 @@
+
+
+<!--lista de productos y botón Agregar. -->
+
+<div id="app">
+    <h2>Mini Tienda </h2>
+
+    <!-- Campo para agregar productos a la tienda -->
+    <div style="margin-bottom:10px;">
+        <input v-model="nuevoProducto.nombre" placeholder="Nombre del producto" />
+        <input v-model.number="nuevoProducto.precio" placeholder="Precio" type="number" min="0" />
+        <button @click="agregarProducto">Agregar producto</button>
+    </div>
+
+    <!-- Lista de productos disponibles -->
+    <h3>Productos disponibles</h3>
+    <ul>
+        <li v-for="(producto, index) in productos" :key="producto.id">
+            {{ producto.nombre }} - ${{ producto.precio.toFixed(2) }}
+            <button @click="agregarAlCarrito(producto)">Agregar</button>
+            <button @click="eliminarProducto(index)">Eliminar</button>
+        </li>
+    </ul>
+
+    <!-- Carrito -->
+    <h3>Carrito ({{ carrito.length }})</h3>
+    <ul>
+        <li v-for="(item, i) in carrito" :key="item.id">
+            {{ item.nombre }} x{{ item.cantidad }} - ${{ (item.precio * item.cantidad).toFixed(2) }}
+            <button @click="quitarDelCarrito(i)">Quitar</button>
+        </li>
+    </ul>
+
+    <div v-if="carrito.length">
+        <strong>Total: ${{ total.toFixed(2) }}</strong>
+    </div>
+</div>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                nuevoProducto: { nombre: '', precio: null },
+                productos: [
+                    { id: 1, nombre: 'Camisa', precio: 20 },
+                    { id: 2, nombre: 'Pantalón', precio: 35 },
+                    { id: 3, nombre: 'Zapatos', precio: 50 }
+                ],
+                carrito: []
+            };
+        },
+        methods: {
+            agregarProducto() {
+                const nombre = this.nuevoProducto.nombre && this.nuevoProducto.nombre.trim();
+                const precio = Number(this.nuevoProducto.precio);
+                if (!nombre || isNaN(precio) || precio < 0) return;
+                const id = this.productos.length ? Math.max(...this.productos.map(p => p.id)) + 1 : 1;
+                this.productos.push({ id, nombre, precio });
+                this.nuevoProducto.nombre = '';
+                this.nuevoProducto.precio = null;
+            },
+            eliminarProducto(index) {
+                this.productos.splice(index, 1);
+            },
+            agregarAlCarrito(producto) {
+                const existing = this.carrito.find(i => i.id === producto.id);
+                if (existing) existing.cantidad++;
+                else this.carrito.push({ id: producto.id, nombre: producto.nombre, precio: producto.precio, cantidad: 1 });
+            },
+            quitarDelCarrito(index) {
+                this.carrito.splice(index, 1);
+            }
+        },
+        computed: {
+            total() {
+                return this.carrito.reduce((sum, i) => sum + i.precio * i.cantidad, 0);
+            }
+        }
+    }).mount('#app');
+</script>

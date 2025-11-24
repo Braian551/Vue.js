@@ -1,0 +1,27 @@
+<!-- Cambiar el color de fondo o texto al hacer clic en un botón -->
+<div id="app">
+    <!-- usamos binding de estilo  -->
+    <h1 :style="{ color: color }">Texto con color: {{ color }}</h1>
+    <!--  mostramos -->
+    <!-- Botón simple para cambiar al siguiente color (gira por el array) -->
+    <button @click="cambiarColor">Cambiar a {{ colors[(colors.indexOf(color) + 1) % colors.length] }}</button>
+</div>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                color: 'black',
+                // Lista simple de colores para ciclar
+                colors: ['black', 'red', 'blue', 'green', 'purple', 'orange', 'brown', 'yellow', 'pink', 'teal']
+            };
+        },
+        methods: {
+            cambiarColor() {
+                // Cambia al siguiente color en el array (una sola línea concisa)
+                this.color = this.colors[(this.colors.indexOf(this.color) + 1) % this.colors.length];
+            }
+        }
+    }).mount('#app');
+</script>
